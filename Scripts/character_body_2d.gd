@@ -47,7 +47,7 @@ func _physics_process(delta: float) -> void:
 		if is_on_floor():
 			velocity.x = move_toward(velocity.x, 0, decel_ground * delta)
 		else:
-			velocity.x = move_toward(velocity.x, 0, decel_air	* delta)
+			velocity.x = move_toward(velocity.x, 0, decel_air * delta)
 
 
 
@@ -60,21 +60,23 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		last_direction = -1
 	if event.is_action_pressed("ui_right"):
 		last_direction = 1
+
 	if event.is_action_released("ui_right") and last_direction == 1:
 		if Input.is_action_pressed("ui_left"):
 			last_direction = -1
 		else :
 			last_direction = 0
+
 	if event.is_action_released("ui_left") and last_direction == -1:
 		if Input.is_action_pressed("ui_right"):
 			last_direction = 1
 		else :
 			last_direction = 0
+		
 
 	# 加速下落
 	if event.is_action_pressed("ui_down"):
 		down = true
 	if event.is_action_released("ui_down"):
 		down = false
-
 	
