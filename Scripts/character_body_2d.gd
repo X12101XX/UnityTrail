@@ -1,50 +1,82 @@
 extends CharacterBody2D
 
+@export var max_speed := 300.0
+@export var accel_ground := 3000
+@export var decel_ground := 5000
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
-const ACCELERATION := 6000.0
-const DECELERATION := 6000.0
+@export var accel_air := 2000
+@export var decel_air := 3000
+
+@export var jump_velocity = -400.0
+
+@export var down_velocity = 100.0
+
 
 var last_direction := 0
-# -1 -> left 
-# 1 -> right 
-# 0 -> null
+# -1 -> 左
+# 1 -> 右
+# 0 -> 不动
+
+var down: bool = false
+# true -> 加速下落
+# false -> 正常下落
+
 
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
+	# 下落逻辑
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+		# 加速下落
+		if down :
+			velocity.y += down_velocity * delta
 
-	# Handle jump.
+	# 跳跃
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+		velocity.y = jump_velocity
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
+
+	# 左右移动 
+	var target = last_direction * max_speed
 	
-	var target = last_direction * SPEED
-
 	if last_direction != 0:
-		velocity.x = move_toward(velocity.x, target, ACCELERATION * delta)
+		if is_on_floor() :
+			velocity.x = move_toward(velocity.x, target, accel_ground * delta) 
+		else: 
+			velocity.x = move_toward(velocity.x, target, accel_air * delta)
 	else:
-		velocity.x = move_toward(velocity.x, 0, DECELERATION * delta)
-		
+		if is_on_floor():
+			velocity.x = move_toward(velocity.x, 0, decel_ground * delta)
+		else:
+			velocity.x = move_toward(velocity.x, 0, decel_air * delta)
+
+
 
 	move_and_slide()
 
 func _unhandled_key_input(event: InputEvent) -> void:
+
+	# 左右控制
 	if event.is_action_pressed("ui_left"):
 		last_direction = -1
 	if event.is_action_pressed("ui_right"):
 		last_direction = 1
+
 	if event.is_action_released("ui_right") and last_direction == 1:
 		if Input.is_action_pressed("ui_left"):
 			last_direction = -1
 		else :
 			last_direction = 0
+
 	if event.is_action_released("ui_left") and last_direction == -1:
 		if Input.is_action_pressed("ui_right"):
 			last_direction = 1
 		else :
 			last_direction = 0
+		
+
+	# 加速下落
+	if event.is_action_pressed("ui_down"):
+		down = true
+	if event.is_action_released("ui_down"):
+		down = false
+	

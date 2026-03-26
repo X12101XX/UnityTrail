@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cog7evuuqaxx"]
+[gd_scene format=3 uid="uid://cqkgi423h6di2"]
 
 [ext_resource type="Script" uid="uid://cyttxj7jm7fhq" path="res://Scripts/character_body_2d.gd" id="1_8od7v"]
 [ext_resource type="Texture2D" uid="uid://6n3tpg6dchb3" path="res://icon.svg" id="2_qc4db"]
@@ -9,7 +9,7 @@ size = Vector2(126, 126)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qc4db"]
 size = Vector2(1453, 20)
 
-[node name="Node2D" type="Node2D" unique_id=2144433010]
+[node name="Player" type="Node2D" unique_id=2144433010]
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1983070972]
 position = Vector2(13, -1)
