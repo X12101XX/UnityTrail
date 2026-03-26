@@ -13,9 +13,9 @@ extends CharacterBody2D
 
 
 var last_direction := 0
-# -1 -> left 
-# 1 -> right 
-# 0 -> null
+# -1 -> 左
+# 1 -> 右
+# 0 -> 不动
 
 var down: bool = false
 # true -> 加速下落
@@ -54,6 +54,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _unhandled_key_input(event: InputEvent) -> void:
+
 	# 左右控制
 	if event.is_action_pressed("ui_left"):
 		last_direction = -1
