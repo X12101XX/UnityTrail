@@ -20,14 +20,14 @@ func activate(user: CharacterBody2D):
 	var dash_timer = dash_time
 
 	# 获取角色贴图
-	var sprite := user.get_node("Sprite2D")
+	var sprite:Sprite2D = user.get_node("Sprite2D")
 
 	while dash_timer > 0:
 		# 先在贴图位置生成 trail
 		var trail := Sprite2D.new()
 		
 		# 特效采用的贴图与位置，生成尾迹
-		trail.texture = preload("res://icon.svg")
+		trail.texture = sprite.texture
 		trail.global_position = sprite.global_position
 		trail.offset = Vector2.ZERO
 		user.get_parent().add_child(trail)
