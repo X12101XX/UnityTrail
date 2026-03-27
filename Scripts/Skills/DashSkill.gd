@@ -23,10 +23,10 @@ func activate(user: CharacterBody2D):
 	var sprite:Sprite2D = user.get_node("Sprite2D")
 
 	while dash_timer > 0:
-		# 先在贴图位置生成 trail
+		# 在贴图位置生成 trail
 		var trail := Sprite2D.new()
 		
-		# 特效采用的贴图与位置，生成尾迹
+		# 设置特效采用的贴图，生成尾迹
 		trail.texture = sprite.texture
 		trail.global_position = sprite.global_position
 		trail.offset = Vector2.ZERO
