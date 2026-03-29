@@ -9,14 +9,16 @@ var _cooling := false
 # true -> 冷却中
 
 func activate(user: CharacterBody2D):
-	if _cooling or user.last_direction == 0:
+	if _cooling or user.last_direction == Vector2.ZERO:
 		return
 
 	_cooling = true
 	user.is_dashing = true
 
 	# 设置冲刺方向和冲刺计时器
-	var dash_dir = user.last_direction
+	var dash_dir: Vector2 = user.last_direction
+	dash_dir.normalized()
+	
 	var dash_timer = dash_time
 
 	# 获取角色贴图
@@ -38,8 +40,8 @@ func activate(user: CharacterBody2D):
 		tw.tween_callback(trail.queue_free)
 		
 		# 设置冲刺速度
-		user.velocity.x = dash_dir * dash_speed
-		user.velocity.y = 0
+		user.velocity.x = dash_dir.x * dash_speed
+		user.velocity.y = dash_dir.y * dash_speed
 
 		dash_timer -= get_physics_process_delta_time()
 		await get_tree().process_frame

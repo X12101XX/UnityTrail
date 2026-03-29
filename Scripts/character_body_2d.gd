@@ -6,5 +6,5 @@ func use_skill(skill_name: String):
 		skill.activate(self)
 
 func _unhandled_input(event):
-	if event.is_action_pressed("ui_up"):
+	if event.is_action_pressed("ui_cancel"):
 		use_skill("DashSkill")
