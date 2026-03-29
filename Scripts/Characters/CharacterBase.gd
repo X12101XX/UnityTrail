@@ -25,6 +25,11 @@ var down: bool = false
 
 
 func _physics_process(delta: float) -> void:
+
+	if is_dashing:
+		move_and_slide()
+		return
+
 	# 下落逻辑
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -35,7 +40,6 @@ func _physics_process(delta: float) -> void:
 	# 跳跃
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = jump_velocity
-
 
 	# 左右移动 
 	var target = last_direction * max_speed
