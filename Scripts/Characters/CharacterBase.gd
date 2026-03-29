@@ -11,8 +11,7 @@ extends CharacterBody2D
 
 @export var down_velocity = 100.0
 
-
-var last_direction := 0
+var last_direction: Vector2 = Vector2.ZERO
 # -1 -> 左
 # 1 -> 右
 # 0 -> 不动
@@ -42,9 +41,9 @@ func _physics_process(delta: float) -> void:
 		velocity.y = jump_velocity
 
 	# 左右移动 
-	var target = last_direction * max_speed
+	var target = last_direction.x * max_speed
 	
-	if last_direction != 0:
+	if last_direction.x != 0:
 		if is_on_floor() :
 			velocity.x = move_toward(velocity.x, target, accel_ground * delta) 
 		else: 
@@ -59,25 +58,43 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-func _unhandled_key_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 
 	# 左右控制
 	if event.is_action_pressed("ui_left"):
-		last_direction = -1
+		last_direction.x = -1
 	if event.is_action_pressed("ui_right"):
-		last_direction = 1
+		last_direction.x  = 1
 
-	if event.is_action_released("ui_right") and last_direction == 1:
+	if event.is_action_released("ui_right") and last_direction.x == 1:
 		if Input.is_action_pressed("ui_left"):
-			last_direction = -1
+			last_direction.x = -1
 		else :
-			last_direction = 0
+			last_direction.x = 0
 
-	if event.is_action_released("ui_left") and last_direction == -1:
+	if event.is_action_released("ui_left") and last_direction.x == -1:
 		if Input.is_action_pressed("ui_right"):
-			last_direction = 1
+			last_direction.x = 1
 		else :
-			last_direction = 0
+			last_direction.x = 0
+	
+	# 上下控制
+	if event.is_action_pressed("ui_up"):
+		last_direction.y = -1
+	if event.is_action_pressed("ui_down"):
+		last_direction.y = 1
+
+	if event.is_action_released("ui_up") and last_direction.y == 1:
+		if Input.is_action_pressed("ui_down"):
+			last_direction.y = -1
+		else :
+			last_direction.y = 0
+
+	if event.is_action_released("ui_left") and last_direction.y == -1:
+		if Input.is_action_pressed("ui_right"):
+			last_direction.y = 1
+		else :
+			last_direction.y = 0
 		
 
 	# 加速下落
