@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://c5u021l7kwvy0"]
+
+[ext_resource type="Script" uid="uid://bw43os437jovc" path="res://Scripts/player_base.gd" id="1_2gi7g"]
+[ext_resource type="Texture2D" uid="uid://6n3tpg6dchb3" path="res://icon.svg" id="2_f1llg"]
+[ext_resource type="Resource" uid="uid://bq42cr1yy1ump" path="res://data/characters/test_character_data.tres" id="2_wikoy"]
+[ext_resource type="Script" uid="uid://ci4e41iqk7lxi" path="res://Scripts/componets/movement_component.gd" id="3_5siyo"]
+[ext_resource type="Shader" uid="uid://cqs7st1eo5xkt" path="res://Shades/fortest.gdshader" id="3_83fhq"]
+[ext_resource type="Script" uid="uid://cew1wpylveng2" path="res://Scripts/state_machine/state_machine.gd" id="4_wikoy"]
+[ext_resource type="Script" uid="uid://c4pnd3jcqxsqa" path="res://Scripts/state_machine/idle_state.gd" id="5_yp7iu"]
+[ext_resource type="Script" uid="uid://b0nlgk15eqlgc" path="res://Scripts/state_machine/run_state.gd" id="6_83fhq"]
+[ext_resource type="Script" uid="uid://jdi5qqruvx37" path="res://Scripts/state_machine/jump_state.gd" id="7_2nyro"]
+[ext_resource type="Script" uid="uid://da6wn7n4v43rc" path="res://Scripts/state_machine/fall_state.gd" id="8_gqu25"]
+[ext_resource type="Script" uid="uid://f84njo5e5xin" path="res://Scripts/abilities/dash_ability.gd" id="10_yp7iu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2nyro"]
+shader = ExtResource("3_83fhq")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pok4w"]
+size = Vector2(128, 130)
+
+[node name="CharacterBase" type="CharacterBody2D" unique_id=722895540]
+script = ExtResource("1_2gi7g")
+data = ExtResource("2_wikoy")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=290907246]
+material = SubResource("ShaderMaterial_2nyro")
+texture = ExtResource("2_f1llg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=44628437]
+position = Vector2(-1, -1)
+shape = SubResource("RectangleShape2D_pok4w")
+
+[node name="MovementComponent" type="Node" parent="." unique_id=1464979228]
+script = ExtResource("3_5siyo")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=907588542]
+
+[node name="StateMachine" type="Node" parent="." unique_id=425170324 node_paths=PackedStringArray("initial_state")]
+script = ExtResource("4_wikoy")
+initial_state = NodePath("IdleState")
+metadata/_custom_type_script = "uid://cew1wpylveng2"
+
+[node name="IdleState" type="Node" parent="StateMachine" unique_id=1450974321]
+script = ExtResource("5_yp7iu")
+
+[node name="RunState" type="Node" parent="StateMachine" unique_id=673004808]
+script = ExtResource("6_83fhq")
+
+[node name="JumpState" type="Node" parent="StateMachine" unique_id=975434538]
+script = ExtResource("7_2nyro")
+
+[node name="FallState" type="Node" parent="StateMachine" unique_id=432717745]
+script = ExtResource("8_gqu25")
+
+[node name="Abilities" type="Node" parent="." unique_id=127270382]
+
+[node name="DashAbility" type="Node" parent="Abilities" unique_id=2107477148]
+script = ExtResource("10_yp7iu")
+metadata/_custom_type_script = "uid://f84njo5e5xin"
