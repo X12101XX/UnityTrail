@@ -1,0 +1,100 @@
+[gd_scene format=3 uid="uid://cc5ptm2o3m1ls"]
+
+[ext_resource type="Shader" uid="uid://j00tl8fk4e10" path="res://Shades/blink.gdshader" id="1_4qdhd"]
+[ext_resource type="Texture2D" uid="uid://6n3tpg6dchb3" path="res://icon.svg" id="2_ue3fo"]
+[ext_resource type="Shader" uid="uid://bjnef1gfj1oob" path="res://Shades/loadingAnimate.gdshader" id="3_ue3fo"]
+[ext_resource type="Shader" uid="uid://huhg0yrkoe8w" path="res://Shades/dash.gdshader" id="4_os2ly"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_os2ly"]
+shader = ExtResource("1_4qdhd")
+shader_parameter/blink_level = 0.0
+shader_parameter/blink_color = Color(1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_4qdhd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Animate/Sprite2D:material:shader_parameter/opacity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_ue3fo"]
+resource_name = "blink"
+length = 0.1334
+
+[sub_resource type="Animation" id="Animation_os2ly"]
+resource_name = "loading_animation_1"
+length = 0.3
+step = 0.016666668
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Animate/Sprite2D:material:shader_parameter/opacity")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.032416154, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_os2ly"]
+_data = {
+&"RESET": SubResource("Animation_4qdhd"),
+&"blink": SubResource("Animation_ue3fo"),
+&"loading_animation_1": SubResource("Animation_os2ly")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_voh80"]
+shader = ExtResource("3_ue3fo")
+shader_parameter/_CirclePosition = Vector2(0.5, 0.5)
+shader_parameter/_Progress = 0.95999997854208
+shader_parameter/_Smoothness = 0.03
+shader_parameter/_Background = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4oams"]
+shader = ExtResource("4_os2ly")
+shader_parameter/dash_dir = Vector2(1, 1)
+shader_parameter/line_count = 6.665
+shader_parameter/length = 0.4
+shader_parameter/thickness = 0.03
+shader_parameter/randomness = 0.3
+shader_parameter/intensity = 1.0
+
+[node name="Shades" type="Node2D" unique_id=257769484]
+
+[node name="Blink" type="Node2D" parent="." unique_id=595257252]
+
+[node name="Sprite2D" type="Sprite2D" parent="Blink" unique_id=689356615]
+material = SubResource("ShaderMaterial_os2ly")
+position = Vector2(1104, 848.00006)
+scale = Vector2(18.015625, 18.015625)
+texture = ExtResource("2_ue3fo")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Blink" unique_id=616735629]
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_os2ly")
+
+[node name="Animate" type="Node2D" parent="." unique_id=1701281062]
+
+[node name="Sprite2D" type="Sprite2D" parent="Animate" unique_id=1249072217]
+material = SubResource("ShaderMaterial_voh80")
+position = Vector2(967, 420)
+scale = Vector2(22.851563, 22.851563)
+texture = ExtResource("2_ue3fo")
+
+[node name="Dash" type="Node2D" parent="." unique_id=285971840]
+visible = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Dash" unique_id=325787527]
+material = SubResource("ShaderMaterial_4oams")
+position = Vector2(136, 54)
+texture = ExtResource("2_ue3fo")
