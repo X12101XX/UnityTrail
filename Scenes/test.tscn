@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://cqkgi423h6di2"]
+
+[ext_resource type="Script" uid="uid://cyttxj7jm7fhq" path="res://Scripts/character_body_2d.gd" id="1_8od7v"]
+[ext_resource type="Texture2D" uid="uid://6n3tpg6dchb3" path="res://icon.svg" id="2_qc4db"]
+[ext_resource type="Script" uid="uid://babdyrtacgcc7" path="res://Scripts/Skills/DashSkill.gd" id="3_qc4db"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8od7v"]
+size = Vector2(126, 126)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qc4db"]
+size = Vector2(1453, 20)
+
+[node name="Player" type="Node2D" unique_id=2144433010]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1983070972]
+position = Vector2(13, -1)
+script = ExtResource("1_8od7v")
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D" unique_id=1603519688]
+position = Vector2(139, 143)
+texture = ExtResource("2_qc4db")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1057974700]
+position = Vector2(141, 140)
+shape = SubResource("RectangleShape2D_8od7v")
+
+[node name="Skills" type="Node" parent="CharacterBody2D" unique_id=2144078606]
+
+[node name="DashSkill" type="Node" parent="CharacterBody2D/Skills" unique_id=1001556370]
+script = ExtResource("3_qc4db")
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=300150657]
+position = Vector2(386, 318)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1672603383]
+position = Vector2(270.5, 270)
+shape = SubResource("RectangleShape2D_qc4db")
