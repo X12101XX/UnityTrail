@@ -1,11 +1,15 @@
 class_name AbilityBase extends Node
 
 var character: CharacterBody2D
+var state_machine: StateMachine
+var movement: MovementComponent
 
 
 # 由 player_base._ready() 自动调用
 func setup(p_character: CharacterBody2D) -> void:
     character = p_character
+    state_machine = character.get_node("StateMachine") as StateMachine
+    movement = character.get_node("MovementComponent") as MovementComponent
     _inject_states()
 
 
@@ -16,18 +20,16 @@ func _inject_states() -> void:
 
 # 把状态注入到状态机中（加入节点树 + 注册 + 绑定守卫）
 func inject_state(state: State) -> void:
-    var sm = character.get_node("StateMachine") as StateMachine
-    sm.add_child(state)
-    sm.register_state(state)
-    sm.register_ability_guard(state.name, self)
+    state_machine.add_child(state)
+    state_machine.register_state(state)
+    state_machine.register_ability_guard(state.name, self)
 
 
 # 移除状态（角色切换能力时用）
 func remove_state(state_name: StringName) -> void:
-    var sm = character.get_node("StateMachine") as StateMachine
-    var state_node = sm.states.get(state_name)
-    sm.unregister_state(state_name)
-    sm.unregister_ability_guard(state_name)
+    var state_node = state_machine.states.get(state_name)
+    state_machine.unregister_state(state_name)
+    state_machine.unregister_ability_guard(state_name)
     if state_node:
         state_node.queue_free()
 

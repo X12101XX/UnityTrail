@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://jdi5qqruvx37" path="res://Scripts/state_machine/jump_state.gd" id="7_2nyro"]
 [ext_resource type="Script" uid="uid://da6wn7n4v43rc" path="res://Scripts/state_machine/fall_state.gd" id="8_gqu25"]
 [ext_resource type="Script" uid="uid://f84njo5e5xin" path="res://Scripts/abilities/dash_ability.gd" id="10_yp7iu"]
+[ext_resource type="Script" uid="uid://b52wtstxa1fkv" path="res://Scripts/abilities/doubleJump_ability.gd" id="12_2nyro"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2nyro"]
 shader = ExtResource("3_83fhq")
@@ -57,3 +58,7 @@ script = ExtResource("8_gqu25")
 [node name="DashAbility" type="Node" parent="Abilities" unique_id=2107477148]
 script = ExtResource("10_yp7iu")
 metadata/_custom_type_script = "uid://f84njo5e5xin"
+
+[node name="DoubleJumpAbility" type="Node" parent="Abilities" unique_id=873129496]
+script = ExtResource("12_2nyro")
+metadata/_custom_type_script = "uid://b52wtstxa1fkv"

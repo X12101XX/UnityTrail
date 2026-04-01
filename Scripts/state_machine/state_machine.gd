@@ -16,7 +16,6 @@ func _ready() -> void:
         current_state = initial_state
         current_state.enter()
 
-
 func _process(delta: float) -> void:
     if current_state:
         current_state.update(delta)

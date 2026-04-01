@@ -18,6 +18,8 @@ shape = SubResource("RectangleShape2D_twcmd")
 
 [node name="CharacterBase" parent="." unique_id=722895540 instance=ExtResource("1_p1g6d")]
 
+[node name="Camera2D" type="Camera2D" parent="CharacterBase" unique_id=1355755434]
+
 [node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1501034344]
 physics_material_override = SubResource("PhysicsMaterial_p1g6d")
 
