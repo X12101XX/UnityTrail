@@ -20,6 +20,15 @@ func physics_update(delta: float) -> void:
     if Input.is_action_just_released("jump"):
         character.movement.cut_jump()
 
+    # 二段跳
+    if Input.is_action_just_pressed("jump"):
+        var double_jump = character.get_ability("DoubleJumpAbility") as DoubleJumpAbility
+        if double_jump and double_jump.can_activate():
+            double_jump.activate()
+            transitioned.emit("JumpState")
+            return
+
+
     # 速度变为向下 → 进入 FallState
     if character.velocity.y >= 0.0 and not character.is_on_floor():
         transitioned.emit("FallState")

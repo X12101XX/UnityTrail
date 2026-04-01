@@ -29,9 +29,9 @@ func physics_update(delta: float) -> void:
 			transitioned.emit("JumpState")
 			return
 		# 2. 二段跳（如果有这个能力）
-		var double_jump = character.get_ability("DoubleJumpAbility")
+		var double_jump = character.get_ability("DoubleJumpAbility") as DoubleJumpAbility
 		if double_jump and double_jump.can_activate():
-			double_jump.do_double_jump()
+			double_jump.activate()
 			transitioned.emit("JumpState")
 			return
 
