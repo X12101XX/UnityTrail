@@ -6,7 +6,7 @@ var has_used: bool = false
 # 复用 MovementComponent 下的 force_jump，无需注册状态
 # 如需更改，请注册状态
 
-func inject_states() -> void:
+func _inject_states() -> void:
 	if movement:
 		movement.landed.connect(on_landed)
 	else:

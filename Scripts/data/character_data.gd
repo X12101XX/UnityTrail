@@ -31,4 +31,3 @@ class_name CharacterData extends Resource
 @export var weight: float = 1.0
 @export var can_push_blocks: bool = false
 @export var can_activate_magic_runes: bool = false
-
