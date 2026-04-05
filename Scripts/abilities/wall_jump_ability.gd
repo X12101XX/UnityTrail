@@ -2,7 +2,7 @@ class_name WallJumpAbility extends AbilityBase
 
 @export var wall_slide_gravity: float = 220.0
 @export var wall_jump_vertical_force: float = 500.0
-@export var wall_jump_horizontal_force: float = 260.0
+@export var wall_jump_horizontal_force: float = 1000.0
 @export_range(0, 99, 1) var max_wall_jumps: int = 1
 
 var _remaining_wall_jumps: int = 0

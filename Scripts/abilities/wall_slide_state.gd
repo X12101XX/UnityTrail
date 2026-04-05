@@ -26,7 +26,7 @@ func physics_update(delta: float) -> void:
 		else:
 			transitioned.emit("IdleState")
 		return
-
+		
 	if not character.is_on_wall():
 		transitioned.emit("FallState")
 		return
