@@ -3,6 +3,7 @@ class_name WallJumpAbility extends AbilityBase
 @export var wall_slide_gravity: float = 220.0
 @export var wall_jump_vertical_force: float = 500.0
 @export var wall_jump_horizontal_force: float = 260.0
+# 最大蹬墙跳次数（< 0 会被当成 0）
 @export var max_wall_jumps: int = 1
 
 var _remaining_wall_jumps: int = 0

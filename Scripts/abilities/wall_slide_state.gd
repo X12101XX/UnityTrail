@@ -6,6 +6,7 @@ var ability: WallJumpAbility
 func enter() -> void:
 	character.play_animation("fall")
 	character.movement.gravity_override = ability.wall_slide_gravity
+	# 清掉上升速度，避免从 Jump 上升阶段切入墙滑时出现异常上飞
 	if character.velocity.y < 0.0:
 		character.velocity.y = 0.0
 
