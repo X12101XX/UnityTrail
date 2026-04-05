@@ -3,8 +3,7 @@ class_name WallJumpAbility extends AbilityBase
 @export var wall_slide_gravity: float = 220.0
 @export var wall_jump_vertical_force: float = 500.0
 @export var wall_jump_horizontal_force: float = 260.0
-# 最大蹬墙跳次数（< 0 会被当成 0）
-@export var max_wall_jumps: int = 1
+@export_range(0, 99, 1) var max_wall_jumps: int = 1
 
 var _remaining_wall_jumps: int = 0
 
@@ -35,4 +34,4 @@ func _on_landed() -> void:
 
 
 func _reset_wall_jumps() -> void:
-	_remaining_wall_jumps = max(max_wall_jumps, 0)
+	_remaining_wall_jumps = max_wall_jumps
