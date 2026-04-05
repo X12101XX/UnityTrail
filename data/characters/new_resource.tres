@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://cva78mwhn7bbb"]
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://d3o6mk0nb10sb"]
 
 [ext_resource type="Script" uid="uid://deujhp5w7awum" path="res://Scripts/data/character_data.gd" id="1_g2soq"]
 
 [resource]
 script = ExtResource("1_g2soq")
+jump_force = 2000.0
 metadata/_custom_type_script = "uid://deujhp5w7awum"
