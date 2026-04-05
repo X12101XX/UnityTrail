@@ -54,8 +54,8 @@ func _get_wall_jump_direction() -> float:
 	if dir_x != 0.0:
 		return -sign(dir_x)
 
-	var facing_dir_x = character.facing_direction.x
-	if facing_dir_x != 0.0:
-		return -sign(facing_dir_x)
+	var facing_x = character.facing_direction.x
+	if facing_x != 0.0:
+		return -sign(facing_x)
 
 	return 1.0
