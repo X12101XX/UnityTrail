@@ -1,11 +1,9 @@
 class_name WallSlideState extends State
 
 var ability: WallJumpAbility
-var _wall_direction: float = 0.0
 
 
 func enter() -> void:
-	_wall_direction = _get_wall_direction()
 	character.play_animation("fall")
 	character.movement.gravity_override = ability.wall_slide_gravity
 
@@ -31,11 +29,7 @@ func physics_update(delta: float) -> void:
 		return
 
 	if Input.is_action_just_pressed("jump"):
-		var jump_dir = _wall_direction
-		if jump_dir == 0.0:
-			jump_dir = -sign(character.facing_direction.x)
-			if jump_dir == 0.0:
-				jump_dir = 1.0
+		var jump_dir = _get_wall_jump_direction()
 		character.velocity.x = jump_dir * ability.wall_jump_horizontal_force
 		character.update_facing(jump_dir)
 		character.movement.force_jump(ability.wall_jump_vertical_force)
@@ -46,7 +40,7 @@ func physics_update(delta: float) -> void:
 		_try_ability_transition("DashState")
 
 
-func _get_wall_direction() -> float:
+func _get_wall_jump_direction() -> float:
 	var wall_normal := character.get_wall_normal()
 	if wall_normal.x != 0.0:
 		return wall_normal.x
@@ -55,4 +49,8 @@ func _get_wall_direction() -> float:
 	if dir_x != 0.0:
 		return -sign(dir_x)
 
-	return -sign(character.facing_direction.x)
+	var facing_x = character.facing_direction.x
+	if facing_x != 0.0:
+		return -sign(facing_x)
+
+	return 1.0
