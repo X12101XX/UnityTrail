@@ -18,12 +18,8 @@ func _inject_states() -> void:
 	inject_state(wall_slide_state)
 
 
-func can_wall_jump() -> bool:
-	return _remaining_wall_jumps > 0
-
-
 func consume_wall_jump() -> bool:
-	if not can_wall_jump():
+	if _remaining_wall_jumps <= 0:
 		return false
 	_remaining_wall_jumps -= 1
 	return true
