@@ -6,6 +6,8 @@ var ability: WallJumpAbility
 func enter() -> void:
 	character.play_animation("fall")
 	character.movement.gravity_override = ability.wall_slide_gravity
+	if character.velocity.y < 0.0:
+		character.velocity.y = 0.0
 
 
 func exit() -> void:
@@ -29,6 +31,8 @@ func physics_update(delta: float) -> void:
 		return
 
 	if Input.is_action_just_pressed("jump"):
+		if not ability.consume_wall_jump():
+			return
 		var jump_dir = _get_wall_jump_direction()
 		character.velocity.x = jump_dir * ability.wall_jump_horizontal_force
 		character.update_facing(jump_dir)
