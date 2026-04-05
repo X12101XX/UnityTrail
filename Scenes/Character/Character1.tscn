@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://c5u021l7kwvy0"]
 
 [ext_resource type="Script" uid="uid://bw43os437jovc" path="res://Scripts/player_base.gd" id="1_2gi7g"]
+[ext_resource type="Script" uid="uid://deujhp5w7awum" path="res://Scripts/data/character_data.gd" id="2_2nyro"]
 [ext_resource type="Texture2D" uid="uid://6n3tpg6dchb3" path="res://icon.svg" id="2_f1llg"]
-[ext_resource type="Resource" uid="uid://bq42cr1yy1ump" path="res://data/characters/test_character_data.tres" id="2_wikoy"]
 [ext_resource type="Script" uid="uid://ci4e41iqk7lxi" path="res://Scripts/componets/movement_component.gd" id="3_5siyo"]
 [ext_resource type="Shader" uid="uid://cqs7st1eo5xkt" path="res://Shades/fortest.gdshader" id="3_83fhq"]
 [ext_resource type="Script" uid="uid://cew1wpylveng2" path="res://Scripts/state_machine/state_machine.gd" id="4_wikoy"]
@@ -14,6 +14,10 @@
 [ext_resource type="Script" uid="uid://b52wtstxa1fkv" path="res://Scripts/abilities/doubleJump_ability.gd" id="12_2nyro"]
 [ext_resource type="Script" uid="uid://ddj7m6ad2mpk8" path="res://Scripts/abilities/wall_jump_ability.gd" id="13_jhr8h"]
 
+[sub_resource type="Resource" id="Resource_gqu25"]
+script = ExtResource("2_2nyro")
+metadata/_custom_type_script = "uid://deujhp5w7awum"
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2nyro"]
 shader = ExtResource("3_83fhq")
 
@@ -22,7 +26,7 @@ size = Vector2(128, 130)
 
 [node name="CharacterBase" type="CharacterBody2D" unique_id=722895540]
 script = ExtResource("1_2gi7g")
-data = ExtResource("2_wikoy")
+data = SubResource("Resource_gqu25")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=290907246]
 material = SubResource("ShaderMaterial_2nyro")

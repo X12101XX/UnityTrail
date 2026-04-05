@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://rukmwvnh3h1p"]
 
 [ext_resource type="PackedScene" uid="uid://c5u021l7kwvy0" path="res://Scenes/Character/Character1.tscn" id="1_p1g6d"]
+[ext_resource type="Script" uid="uid://cqwlltob6i8rd" path="res://Scripts/camera_controller.gd" id="2_twcmd"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_p1g6d"]
 
@@ -18,8 +19,6 @@ shape = SubResource("RectangleShape2D_twcmd")
 
 [node name="CharacterBase" parent="." unique_id=722895540 instance=ExtResource("1_p1g6d")]
 
-[node name="Camera2D" type="Camera2D" parent="CharacterBase" unique_id=1355755434]
-
 [node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1501034344]
 physics_material_override = SubResource("PhysicsMaterial_p1g6d")
 
@@ -33,3 +32,7 @@ physics_material_override = SubResource("PhysicsMaterial_p1g6d")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3" unique_id=1136760358]
 position = Vector2(660, 606)
 shape = SubResource("RectangleShape2D_twcmd")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1355755434 node_paths=PackedStringArray("target")]
+script = ExtResource("2_twcmd")
+target = NodePath("../CharacterBase")
