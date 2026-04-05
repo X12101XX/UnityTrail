@@ -39,8 +39,9 @@ func physics_update(delta: float) -> void:
         transitioned.emit("IdleState")
         return
 
-    # 贴墙 → 蹬墙滑行（如果有能力）
-    if character.is_on_wall() and not character.is_on_floor():
+    # 上升阶段不进墙滑，避免贴墙按方向时异常上飞
+    # 贴墙且开始下落 → 蹬墙滑行（如果有能力）
+    if character.velocity.y >= 0.0 and character.is_on_wall() and not character.is_on_floor():
         _try_ability_transition("WallSlideState") 
 
     # 能力：冲刺
