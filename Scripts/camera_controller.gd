@@ -6,130 +6,187 @@ class_name CameraController
 @export var target: Node2D:
 	set(value):
 		target = value
-		if is_node_ready():
-			_update_camera_position()
+		if is_node_ready() and target:
+			set_position_immediate(target.global_position + Vector2(0.0, vertical_offset))
 
-## 缓动速度（0-1，数值越低越缓）
-@export var easing_speed: float = 0.1
+## 水平跟随速度（值越大越快；推荐 4~10）
+@export var horizontal_follow_speed: float = 6.0
 
-## 是否启用向前看效果（基于角色移动方向）
+## 垂直跟随速度（略快于水平，减少跳跃时的视觉错乱；推荐 6~12）
+@export var vertical_follow_speed: float = 9.0
+
+## 垂直偏移：正值摄像机下移（看到更多上方），负值上移（看到更多下方）
+@export var vertical_offset: float = -30.0
+
+## 是否启用向前看效果
 @export var enable_look_ahead: bool = true
 
-## 向前看的距离
-@export var look_ahead_distance: float = 100.0
+## 水平向前看距离（像素）
+@export var look_ahead_distance: float = 80.0
+
+## 垂直向前看距离（下落速度超过阈值时向下预览）
+@export var vertical_look_ahead_distance: float = 60.0
+
+## 垂直触发向前看的速度阈值
+@export var vertical_look_ahead_threshold: float = 200.0
+
+## 向前看效果本身的跟随速度
+@export var look_ahead_speed: float = 4.0
+
+## 触发水平向前看所需的最低水平速度（低于此值时使用 facing_direction 回退）
+@export var look_ahead_velocity_threshold: float = 10.0
+
+## 待机状态下向前看距离的缩放比例（facing_direction 回退时使用，通常小于运动时）
+@export var look_ahead_idle_scale: float = 0.5
+
+## 是否启用死区（角色在死区内时摄像机不移动，减少抖动）
+@export var enable_deadzone: bool = true
+
+## 水平死区大小（像素）
+@export var deadzone_h: float = 10.0
+
+## 垂直死区大小（像素）
+@export var deadzone_v: float = 8.0
 
 ## 是否限制摄像机边界
 @export var enable_bounds: bool = true
 
-## 摄像机边界（left, top, right, bottom）
+## 摄像机边界（left, top, width, height）
 @export var camera_bounds: Rect2 = Rect2(-500, -500, 2000, 1500)
 
-## 摄像机抖动强度
+## 摄像机抖动强度（通过 shake() 设置；每秒自动衰减）
 @export var shake_intensity: float = 0.0
 
-@onready var player: CharacterBody2D = target
+## 抖动衰减速率（每秒减少的抖动强度）
+@export var shake_decay_rate: float = 50.0
 
-var _target_position: Vector2 = Vector2.ZERO
 var _current_position: Vector2 = Vector2.ZERO
+var _target_position: Vector2 = Vector2.ZERO
+var _look_ahead_offset: Vector2 = Vector2.ZERO
 var _shake_offset: Vector2 = Vector2.ZERO
-var _is_shaking: bool = false
 
 
 func _ready() -> void:
 	if not target:
-		var temp_target = get_tree().get_first_node_in_group("player")
-		if temp_target:
-			target = temp_target
-	
+		var found = get_tree().get_first_node_in_group("player")
+		if found:
+			target = found
+
 	if target:
-		_update_camera_position()
+		set_position_immediate(target.global_position + Vector2(0.0, vertical_offset))
 
 
 func _process(delta: float) -> void:
 	if not target:
 		return
-	
-	_update_camera_position()
+
+	_update_look_ahead(delta)
+	_update_target_position()
+	_apply_easing(delta)
+	_apply_bounds()
 	_apply_shake(delta)
 
-
-func _update_camera_position() -> void:
-	if not target:
-		return
-	
-	_calculate_target_position()
-	_apply_easing()
-	_apply_bounds()
-	
-	if _is_shaking:
-		global_position = _current_position + _shake_offset
-	else:
-		global_position = _current_position
+	global_position = _current_position + _shake_offset
 
 
-func _calculate_target_position() -> void:
-	_target_position = target.global_position
-	
-	if enable_look_ahead and target.has_method("get_facing_direction"):
-		var facing = target.facing_direction
-		_target_position += facing * look_ahead_distance
+# ──────────────────────────────────────────────────────────── internal ──────
 
-func _apply_easing() -> void:
-	_current_position = _current_position.lerp(
-		_target_position,
-		easing_speed
+func _update_look_ahead(delta: float) -> void:
+	var desired := Vector2.ZERO
+
+	if enable_look_ahead:
+		# 水平：优先使用速度（更平滑），回退到 facing_direction 属性
+		if target is CharacterBody2D and absf(target.velocity.x) > look_ahead_velocity_threshold:
+			desired.x = signf(target.velocity.x) * look_ahead_distance
+		elif "facing_direction" in target:
+			desired.x = (target.facing_direction as Vector2).x * look_ahead_distance * look_ahead_idle_scale
+
+		# 垂直：快速下落时向下预览
+		if target is CharacterBody2D and target.velocity.y > vertical_look_ahead_threshold:
+			desired.y = vertical_look_ahead_distance
+
+	_look_ahead_offset = _look_ahead_offset.lerp(
+		desired,
+		1.0 - exp(-look_ahead_speed * delta)
 	)
+
+
+func _update_target_position() -> void:
+	var base := target.global_position + Vector2(0.0, vertical_offset) + _look_ahead_offset
+
+	if enable_deadzone:
+		var diff := base - _current_position
+		if absf(diff.x) < deadzone_h:
+			base.x = _current_position.x
+		if absf(diff.y) < deadzone_v:
+			base.y = _current_position.y
+
+	_target_position = base
+
+
+func _apply_easing(delta: float) -> void:
+	# 指数衰减插值：帧率无关，速度值直观（秒为单位的响应速度）
+	_current_position.x = lerpf(
+		_current_position.x,
+		_target_position.x,
+		1.0 - exp(-horizontal_follow_speed * delta)
+	)
+	_current_position.y = lerpf(
+		_current_position.y,
+		_target_position.y,
+		1.0 - exp(-vertical_follow_speed * delta)
+	)
+
 
 func _apply_bounds() -> void:
 	if not enable_bounds:
 		return
-	
+
+	var half := get_viewport_rect().size * 0.5
 	_current_position.x = clamp(
 		_current_position.x,
-		camera_bounds.position.x + get_viewport_rect().size.x / 2,
-		camera_bounds.position.x + camera_bounds.size.x - get_viewport_rect().size.x / 2
+		camera_bounds.position.x + half.x,
+		camera_bounds.position.x + camera_bounds.size.x - half.x
 	)
-	
 	_current_position.y = clamp(
 		_current_position.y,
-		camera_bounds.position.y + get_viewport_rect().size.y / 2,
-		camera_bounds.position.y + camera_bounds.size.y - get_viewport_rect().size.y / 2
+		camera_bounds.position.y + half.y,
+		camera_bounds.position.y + camera_bounds.size.y - half.y
 	)
 
 
 func _apply_shake(delta: float) -> void:
-	if shake_intensity <= 0:
-		_is_shaking = false
+	if shake_intensity <= 0.0:
 		_shake_offset = Vector2.ZERO
 		return
-	
-	_is_shaking = true
+
 	_shake_offset = Vector2(
 		randf_range(-shake_intensity, shake_intensity),
 		randf_range(-shake_intensity, shake_intensity)
 	)
-	
-	# 逐帧减少抖动强度
-	shake_intensity = move_toward(shake_intensity, 0.0, delta * 50)
+	shake_intensity = move_toward(shake_intensity, 0.0, delta * shake_decay_rate)
 
 
-## 添加摄像机抖动效果
+# ──────────────────────────────────────────────────────────── public API ────
+
+## 触发摄像机抖动（多次调用取最大值）
 func shake(intensity: float) -> void:
-	shake_intensity = max(shake_intensity, intensity)
+	shake_intensity = maxf(shake_intensity, intensity)
 
 
-## 立即设置摄像机位置（不使用缓动）
+## 立即将摄像机传送到指定位置（跳过缓动，适合场景切换）
 func set_position_immediate(pos: Vector2) -> void:
 	_current_position = pos
 	_target_position = pos
+	_look_ahead_offset = Vector2.ZERO
 	global_position = pos
 
 
-## 调整缓动速度
-func set_easing_speed(speed: float) -> void:
-	easing_speed = clamp(speed, 0.01, 1.0)
+## 设置水平跟随速度
+func set_horizontal_follow_speed(speed: float) -> void:
+	horizontal_follow_speed = clampf(speed, 0.1, 50.0)
 
 
-## 获取当前缓动速度
-func get_easing_speed() -> float:
-	return easing_speed
+## 设置垂直跟随速度
+func set_vertical_follow_speed(speed: float) -> void:
+	vertical_follow_speed = clampf(speed, 0.1, 50.0)
