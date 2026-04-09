@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dluas2kboc7pj"]
+
+[ext_resource type="Script" uid="uid://byx7lguk2amus" path="res://Scripts/triggle_zone.gd" id="1_27u58"]
+[ext_resource type="Script" uid="uid://3bhekbrownv4" path="res://Scripts/MapElements/box.gd" id="1_rlal7"]
+[ext_resource type="Texture2D" uid="uid://cvvkffkmy6jrt" path="res://asset/elements/box1.png" id="2_rlal7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_orjab"]
+size = Vector2(1444.4445, 1433.3335)
+
+[node name="Box1" type="Node2D" unique_id=1576979490]
+script = ExtResource("1_rlal7")
+
+[node name="TriggerZone" type="Area2D" parent="." unique_id=747942964]
+scale = Vector2(0.3, 0.3)
+script = ExtResource("1_27u58")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerZone" unique_id=1110519567]
+position = Vector2(-6.3578286e-06, -5)
+scale = Vector2(0.3, 0.3)
+shape = SubResource("RectangleShape2D_orjab")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=503973057]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_rlal7")
