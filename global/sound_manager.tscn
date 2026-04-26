@@ -12,8 +12,10 @@
 [ext_resource type="AudioStream" uid="uid://bjmde5muwlwdr" path="res://asset/Skill/player_wall_jump.mp3" id="10_h5k2i"]
 [ext_resource type="AudioStream" uid="uid://cqu7xgd3ifppl" path="res://asset/Skill/player_dash.mp3" id="11_hx1dm"]
 [ext_resource type="AudioStream" uid="uid://b3jlumn4xl3gj" path="res://asset/Skill/player_doublejump.mp3" id="12_fsnam"]
+[ext_resource type="AudioStream" uid="uid://cf4ndxvf24rmh" path="res://asset/BGM/BGM.mp3" id="13_g8kw5"]
 
 [node name="SoundManager" type="Node" unique_id=1033878259]
+process_mode = 3
 script = ExtResource("1_am1vo")
 
 [node name="SFX" type="Node" parent="." unique_id=422811600]
@@ -23,39 +25,54 @@ script = ExtResource("1_am1vo")
 [node name="Jump" type="AudioStreamPlayer" parent="SFX/Player" unique_id=552175101]
 process_mode = 3
 stream = ExtResource("1_017xh")
+bus = &"SFX"
 
 [node name="land" type="AudioStreamPlayer" parent="SFX/Player" unique_id=930810136]
 stream = ExtResource("3_bpduw")
+bus = &"SFX"
 
 [node name="UI" type="Node" parent="SFX" unique_id=348936257]
 
 [node name="click" type="AudioStreamPlayer" parent="SFX/UI" unique_id=1037561980]
 stream = ExtResource("4_evlv8")
+bus = &"SFX"
 
 [node name="error" type="AudioStreamPlayer" parent="SFX/UI" unique_id=1556750261]
 stream = ExtResource("5_jmfhx")
+bus = &"SFX"
 
 [node name="menu" type="AudioStreamPlayer" parent="SFX/UI" unique_id=321084101]
 stream = ExtResource("6_2ov7n")
+bus = &"SFX"
 
 [node name="win" type="AudioStreamPlayer" parent="SFX/UI" unique_id=151936606]
 stream = ExtResource("7_do6pi")
+bus = &"SFX"
 
 [node name="over" type="AudioStreamPlayer" parent="SFX/UI" unique_id=2137082490]
 stream = ExtResource("8_ct40d")
+bus = &"SFX"
 
 [node name="Skill" type="Node" parent="SFX" unique_id=1594091694]
 
 [node name="flash" type="AudioStreamPlayer" parent="SFX/Skill" unique_id=205971176]
 stream = ExtResource("9_g8kw5")
+bus = &"SFX"
 
 [node name="wall_jump" type="AudioStreamPlayer" parent="SFX/Skill" unique_id=1619801450]
 stream = ExtResource("10_h5k2i")
+bus = &"SFX"
 
 [node name="dash" type="AudioStreamPlayer" parent="SFX/Skill" unique_id=1020699642]
 stream = ExtResource("11_hx1dm")
+bus = &"SFX"
 
 [node name="doublejump" type="AudioStreamPlayer" parent="SFX/Skill" unique_id=66479592]
 stream = ExtResource("12_fsnam")
+bus = &"SFX"
 
 [node name="BGM" type="Node" parent="SFX" unique_id=646884241]
+
+[node name="BGM" type="AudioStreamPlayer" parent="SFX/BGM" unique_id=1132526400]
+stream = ExtResource("13_g8kw5")
+bus = &"BGM"

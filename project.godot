@@ -15,6 +15,14 @@ run/main_scene="uid://rukmwvnh3h1p"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="uid://b52cw741q6r6o"
+
+[autoload]
+
+sound_manager="*uid://dxn01y83ldvqc"
+
 [display]
 
 window/size/viewport_width=1920

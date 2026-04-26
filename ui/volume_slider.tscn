@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://smkxipmkv7i5"]
+
+[ext_resource type="Theme" uid="uid://cn1wxf865t65l" path="res://ui/new_theme.tres" id="1_3qf2g"]
+[ext_resource type="Script" uid="uid://b058of5wet3lq" path="res://ui/volume_slider.gd" id="2_2ouuc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3qf2g"]
+bg_color = Color(0.35991973, 0.6072083, 0.3129194, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ouuc"]
+bg_color = Color(0.35550228, 0.6818507, 0.46442896, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="VolumeSlider" type="HSlider" unique_id=1622181483]
+anchors_preset = -1
+anchor_top = -0.109000005
+anchor_bottom = -0.102000006
+offset_left = 200.0
+offset_top = 317.72
+offset_right = 482.0
+offset_bottom = 326.16
+theme = ExtResource("1_3qf2g")
+theme_override_styles/slider = SubResource("StyleBoxFlat_3qf2g")
+theme_override_styles/grabber_area = SubResource("StyleBoxFlat_2ouuc")
+max_value = 1.0
+step = 0.1
+script = ExtResource("2_2ouuc")

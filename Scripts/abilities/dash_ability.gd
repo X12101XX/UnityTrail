@@ -8,20 +8,20 @@ var _cooldown_timer: float = 0.0
 
 
 func _inject_states() -> void:
-    var dash_state = DashState.new();
-    dash_state.name = "DashState"
-    dash_state.ability = self
-    inject_state(dash_state)
+	var dash_state = DashState.new();
+	dash_state.name = "DashState"
+	dash_state.ability = self
+	inject_state(dash_state)
 
 
 func _physics_process(delta: float) -> void:
-    if _cooldown_timer > 0.0:
-        _cooldown_timer -= delta
+	if _cooldown_timer > 0.0:
+		_cooldown_timer -= delta
 
 
 func can_activate() -> bool:
-    return _cooldown_timer <= 0.0
+	return _cooldown_timer <= 0.0
 
 
 func start_cooldown() -> void:
-    _cooldown_timer = dash_cooldown
+	_cooldown_timer = dash_cooldown
